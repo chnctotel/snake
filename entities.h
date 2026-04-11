@@ -4,7 +4,7 @@
 #include "game_data.h"
 #include "field.h"
 
-class food
+class Food
 {
 private:
     
@@ -15,26 +15,26 @@ private:
     
 public:
     
-    vector getSmallPos(int i) { return small[i]; }
-    vector getPos() { return normal; }
-    int getCount() { return count; }
+    Food();
+    
+    vector getSmallPos(int i) const { return small[i]; }
+    vector getPos() const { return normal; }
+    int getCount() const { return count; }
 
     void setSmallPos(int i, vector newPos) { small[i] = newPos; }
     
-    void init();
+    void spawn(Field& f, byte status);
     
-    void spawn(field& f, byte status);
+    void draw(Field& f, byte status);
     
-    void draw(field& f, byte status);
-    
-    int collision(field& f, byte status, vector head);
+    int collision(Field& f, byte status, vector head);
     
     
 };
 
 ///
 
-class mine
+class Mine
 {
 private:
     
@@ -45,18 +45,20 @@ private:
     
 public:
     
-    vector getSmallPos(int i) { return small[i]; }
-    vector getPos() { return normal; }
-    int getCount() { return count; }
+    Mine();
+    
+    vector getSmallPos(int i) const { return small[i]; }
+    vector getPos() const { return normal; }
+    int getCount() const { return count; }
     
     void setSmallPos(int i, vector newPos) { small[i] = newPos; }
     
     void init();
     
-    void spawn(field& f, byte status);
+    void spawn(Field& f, byte status);
     
-    void draw(field& f, byte status);
+    void draw(Field& f, byte status);
     
-    int collision(field& f, byte status, vector head);
+    int collision(Field& f, byte status, vector head);
     
 };

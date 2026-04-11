@@ -6,21 +6,17 @@
 //
 #include "engine.h"
 
-void engine::setup()
+Engine::Engine() :
+map(30, 20),
+player(map.getWidth() / 2, map.getHeight() / 2, DIRECTION::RIGHT)
 {
-    map.init(30, 20);
     map.clear();
-   
-    player.init(map.getWidth() / 2, map.getHeight() / 2, DIRECTION::RIGHT);
-    
-    target.init();
-    trap.init();
     
     target.spawn(map, status);
     trap.spawn(map, status);
 }
 
-void engine::render()
+void Engine::render()
 {
     map.clear();
     
@@ -31,7 +27,7 @@ void engine::render()
     map.print(status, player.getScore(), T_cooldown, T_duration, T_mine);
 }
 
-void engine::input()
+void Engine::input()
 {
     if (utils::kbhit())
     {
@@ -40,7 +36,7 @@ void engine::input()
     }
 }
 
-void engine::timer()
+void Engine::timer()
 {
     if (T_cooldown >= 300 && !(status & FLAG_SPLIT))
     {
@@ -68,7 +64,7 @@ void engine::timer()
     } else
             T_cooldown++;
 }
-void engine::collision()
+void Engine::collision()
 {
     if (status & FLAG_SPLIT)
     {
@@ -112,7 +108,7 @@ void engine::collision()
     }
     
 }
-void engine::death()
+void Engine::death()
 {
     if (player.getHead().x == map.getWidth() - 1 || player.getHead().x <= 0 ||
         player.getHead().y == map.getHeight() - 1 || player.getHead().y <= 0)
@@ -122,7 +118,7 @@ void engine::death()
         status |= FLAG_LOSE;
 }
 
-void engine::update()
+void Engine::update()
 {
     player.updatePosition();
     T_mine++;
@@ -133,10 +129,8 @@ void engine::update()
 
 }
 
-void engine::run()
+void Engine::run()
 {
-        setup();
-        
         while (!(status & FLAG_LOSE))
         {
             input();

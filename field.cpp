@@ -8,7 +8,7 @@
 #include <iostream>
 #include "field.h"
 
-void field::init(int width, int height)
+Field::Field(int width, int height)
 {
     this->width = width;
     this->height = height;
@@ -16,9 +16,17 @@ void field::init(int width, int height)
     data = new char*[height];
     for (size_t i = 0; i < height; i++)
         data[i] = new char[width];
+    
 }
 
-void field::clear()
+Field::~Field()
+{
+    for (size_t i = 0; i < height; i++)
+        delete[] data[i];
+    delete[] data;
+}
+
+void Field::clear()
 {
     for (int y = 0; y < height; y++)
         for (int x = 0; x < width; x++)
@@ -30,13 +38,13 @@ void field::clear()
         }
 }
 
-void field::setChar(int x, int y, char symbol)
+void Field::setChar(int x, int y, char symbol)
 {
     if (y >= 0 && y < height && x >= 0 && x < width)
         data[y][x] = symbol;
 }
 
-void field::print(byte status, int score, int T_cooldown, int T_duration, int T_mine)
+void Field::print(byte status, int score, int T_cooldown, int T_duration, int T_mine)
 {
     std::system("clear");
     
@@ -76,16 +84,10 @@ void field::print(byte status, int score, int T_cooldown, int T_duration, int T_
     }
 }
 
-bool field::emptyPos(int x, int y)
+bool Field::emptyPos(int x, int y)
 {
     if (y < 0 || y >= height || x < 0 || x >= width)
         return false;
     return data[y][x] == ' ';
 }
 
-void field::destroy()
-{
-    for (size_t i = 0; i < height; i++)
-        delete[] data[i];
-    delete[] data;
-}

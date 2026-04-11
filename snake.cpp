@@ -9,7 +9,7 @@
 #include "utils.h"
 
 
-void snake::setDirection()
+void Snake::setDirection()
 {
     switch (move)
     {
@@ -28,8 +28,7 @@ void snake::setDirection()
     }
 }
 
-
-void snake::init(int x, int y, DIRECTION startMove)
+Snake::Snake(int x, int y, DIRECTION startMove)
 {
     score = 0;
     
@@ -42,7 +41,7 @@ void snake::init(int x, int y, DIRECTION startMove)
     setDirection();
 }
 
-void snake::updatePosition()
+void Snake::updatePosition()
 {
     setDirection();
     
@@ -53,7 +52,7 @@ void snake::updatePosition()
     body[0] = snakeHead;
 }
 
-void snake::input(char key)
+void Snake::input(char key)
 {
     if ((key == 'w' || key == 'W') && move != DIRECTION::DOWN)
         move = DIRECTION::UP;
@@ -65,7 +64,7 @@ void snake::input(char key)
         move = DIRECTION::RIGHT;
 }
 
-void snake::grow()
+void Snake::grow()
 {
     vector* temp = utils::AddElement(body, body + score + 1, {0, 0});
     
@@ -74,7 +73,7 @@ void snake::grow()
     score++;
 }
 
-void snake::shrink()
+void Snake::shrink()
 {
     vector* temp = utils::RemoveElement(body, body + score + 1, body + score);
     
@@ -83,7 +82,7 @@ void snake::shrink()
     score--;
 }
 
-void snake::draw(field& f)
+void Snake::draw(Field& f)
 {
     f.setChar(snakeHead.x, snakeHead.y, '0');
     
@@ -91,7 +90,7 @@ void snake::draw(field& f)
         f.setChar(body[i].x, body[i].y, 'o');
 }
 
-bool snake::collision()
+bool Snake::collision()
 {
     for (int i = 1; i <= score; i++)
         if (snakeHead.x == body[i].x && snakeHead.y == body[i].y)

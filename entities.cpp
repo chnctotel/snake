@@ -7,14 +7,14 @@
 #include "entities.h"
 #include "utils.h"
 
-void food::init()
+Food::Food()
 {
     normal = {-1, -1};
     for (size_t i = 0; i < count; i++)
         small[i] = {-1, -1};
 }
 
-void food::spawn(field& f, byte status)
+void Food::spawn(Field& f, byte status)
 {
     if (status & FLAG_SPLIT)
     {
@@ -49,7 +49,7 @@ void food::spawn(field& f, byte status)
     }
 }
 
-void food::draw(field& f, byte status)
+void Food::draw(Field& f, byte status)
 {
     if (status & FLAG_SPLIT) {
         for (size_t i = 0; i < count; i++)
@@ -60,7 +60,7 @@ void food::draw(field& f, byte status)
         f.setChar(normal.x, normal.y, '@');
 }
 
-int food::collision(field& f, byte status, vector head)
+int Food::collision(Field& f, byte status, vector head)
 {
     if (status & FLAG_SPLIT) {
         for (size_t i = 0; i < count; i++)
@@ -82,14 +82,14 @@ int food::collision(field& f, byte status, vector head)
 
 /// 
 
-void mine::init()
+Mine::Mine()
 {
     normal = {-1, -1};
     for (size_t i = 0; i < count; i++)
         small[i] = {-1, -1};
 }
 
-void mine::spawn(field& f, byte status)
+void Mine::spawn(Field& f, byte status)
 {
     if (status & FLAG_SPLIT)
     {
@@ -124,7 +124,7 @@ void mine::spawn(field& f, byte status)
     }
 }
 
-void mine::draw(field& f, byte status)
+void Mine::draw(Field& f, byte status)
 {
     if (status & FLAG_SPLIT) {
         for (size_t i = 0; i < count; i++)
@@ -135,7 +135,7 @@ void mine::draw(field& f, byte status)
         f.setChar(normal.x, normal.y, 'X');
 }
 
-int mine::collision(field& f, byte status, vector head)
+int Mine::collision(Field& f, byte status, vector head)
 {
     if (status & FLAG_SPLIT) {
         for (size_t i = 0; i < count; i++)

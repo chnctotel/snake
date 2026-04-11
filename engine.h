@@ -13,7 +13,7 @@
 #include "entities.h"
 
 
-class engine
+class Engine
 {
 private:
     
@@ -23,20 +23,20 @@ private:
     int T_duration = 0;
     int T_mine = 0;
     
-    field map;
-    snake player;
-    food  target;
-    mine  trap;
+    Field map;
+    Snake player;
+    Food  target;
+    Mine  trap;
    
     
     
 public:
     
-    byte getStatus() { return status; }
+    Engine();
     
     
-    void setup();
-
+    byte getStatus() const { return status; }
+    
     void render();
     
     void input();

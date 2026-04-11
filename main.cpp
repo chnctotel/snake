@@ -10,7 +10,7 @@ int main()
 {
     srand(static_cast<unsigned>(time(nullptr)));
     
-    engine game;
+    Engine game;
     game.run();
     
     
