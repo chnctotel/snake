@@ -25,8 +25,6 @@ public:
     ~Snake() { delete[] body; }
     
     vector add(const vector& v1, const vector& v2) { return {v1.x + v2.x, v1.y + v2.y};}
-    vector getHead() const { return snakeHead; }
-    int getScore() const { return score; }
     
     void updatePosition();
     void input(char key);
@@ -37,4 +35,6 @@ public:
     bool collision();
     
     void draw(Field& f);
+    
+    friend class Engine;
 };

@@ -24,7 +24,7 @@ void Engine::render()
     trap.draw(map, status);
     player.draw(map);
     
-    map.print(status, player.getScore(), T_cooldown, T_duration, T_mine);
+    map.print(status, player.score, T_cooldown, T_duration, T_mine);
 }
 
 void Engine::input()
@@ -68,20 +68,20 @@ void Engine::collision()
 {
     if (status & FLAG_SPLIT)
     {
-        for (int i = 0; i < target.getCount(); i++)
+        for (int i = 0; i < target.count; i++)
         {
-            vector pos = target.getSmallPos(i);
-            if (player.getHead().x == pos.x && player.getHead().y == pos.y)
+            vector pos = target.small[i];
+            if (player.snakeHead.x == pos.x && player.snakeHead.y == pos.y)
             {
                 player.grow();
                 target.setSmallPos(i, {-1, -1});
             }
         }
         
-        for (int i = 0; i < trap.getCount(); i++)
+        for (int i = 0; i < trap.count; i++)
         {
-            vector pos = trap.getSmallPos(i);
-            if (player.getHead().x == pos.x && player.getHead().y == pos.y)
+            vector pos = trap.small[i];
+            if (player.snakeHead.x == pos.x && player.snakeHead.y == pos.y)
             {
                 player.shrink();
                 trap.setSmallPos(i, {-1, -1});
@@ -89,13 +89,13 @@ void Engine::collision()
         }
     } else
     {
-        if (player.getHead().x == target.getPos().x && player.getHead().y == target.getPos().y)
+        if (player.snakeHead.x == target.normal.x && player.snakeHead.y == target.normal.y)
         {
             player.grow();
             target.spawn(map, status);
         }
         
-        bool is_mineActive = (player.getHead().x == trap.getPos().x && player.getHead().y == trap.getPos().y);
+        bool is_mineActive = (player.snakeHead.x == trap.normal.x && player.snakeHead.y == trap.normal.y);
         
         if (T_mine >= 50 || is_mineActive)
         {
@@ -110,8 +110,8 @@ void Engine::collision()
 }
 void Engine::death()
 {
-    if (player.getHead().x == map.getWidth() - 1 || player.getHead().x <= 0 ||
-        player.getHead().y == map.getHeight() - 1 || player.getHead().y <= 0)
+    if (player.snakeHead.x == map.getWidth() - 1 || player.snakeHead.x <= 0 ||
+        player.snakeHead.y == map.getHeight() - 1 || player.snakeHead.y <= 0)
         status |= FLAG_LOSE;
     
     if (player.collision())
@@ -143,7 +143,7 @@ void Engine::run()
     {
         system("clear");
         std::cout << '\n' << "                             <<< GAME OVER !!! \n";
-        std::cout << '\n' << "                             <<< YOUR SCORE: " << player.getScore() <<"\n\n\n";
+        std::cout << '\n' << "                             <<< YOUR SCORE: " << player.score <<"\n\n\n";
         
     }
 }

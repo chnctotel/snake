@@ -25,8 +25,8 @@ private:
     
     Field map;
     Snake player;
-    Food  target;
-    Mine  trap;
+    Entities target {'$', '@'};
+    Entities trap {'x', 'X'};
    
     
     
