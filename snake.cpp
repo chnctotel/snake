@@ -4,7 +4,6 @@
 //
 //  Created by chnctotel on 30.03.2026.
 //
-#include "game_data.h"
 #include "snake.h"
 #include "utils.h"
 
@@ -75,6 +74,10 @@ void Snake::grow()
 
 void Snake::shrink()
 {
+    if (score <= 0)
+        return;
+        
+
     vector* temp = utils::RemoveElement(body, body + score + 1, body + score);
     
     delete[] body;
@@ -96,6 +99,24 @@ bool Snake::collision()
         if (snakeHead.x == body[i].x && snakeHead.y == body[i].y)
             return true;
     return false;
+}
+
+void Snake::reset(int x, int y, DIRECTION startMove)
+{
+    if (body != nullptr)
+    {
+        delete[] body;
+        body = nullptr;
+    }
+    
+    score = 0;
+    snakeHead = { x, y };
+  
+    body = new vector[1];
+    body[0] = snakeHead;
+    move = startMove;
+    
+    setDirection();
 }
 
 

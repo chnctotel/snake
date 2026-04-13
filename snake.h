@@ -36,5 +36,7 @@ public:
     
     void draw(Field& f);
     
+    void reset(int x, int y, DIRECTION dir);
+    
     friend class Engine;
 };

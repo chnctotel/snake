@@ -18,6 +18,11 @@ using byte = unsigned char;
 static constexpr byte FLAG_LOSE  = 1 << 0;
 static constexpr byte FLAG_SPLIT = 1 << 1;
 
+enum class OPTION
+{
+    START = 0, SETTINGS, LOGIN, STATS, EXIT
+};
+
 enum class DIRECTION
 {
     UP, DOWN, LEFT, RIGHT

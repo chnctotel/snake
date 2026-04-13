@@ -32,7 +32,7 @@ void Entities::spawn(Field& f, byte status)
             
             small[i] = {rx, ry};
             
-            f.setChar(rx, ry, '$');
+            f.setChar(rx, ry, symbolNormal);
         }
         
     }

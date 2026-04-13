@@ -4,14 +4,14 @@
 //
 //  Created by chnctotel on 15.03.2026.
 //
-#include "engine.h"
+#include "application.h"
 
 int main()
 {
     srand(static_cast<unsigned>(time(nullptr)));
     
-    Engine game;
-    game.run();
+    Application app;
+    app.run();
     
     
     return 0;

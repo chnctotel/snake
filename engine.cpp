@@ -129,8 +129,26 @@ void Engine::update()
 
 }
 
+void Engine::reset()
+{
+    status &= ~FLAG_LOSE;
+    
+    player.reset(map.getWidth() / 2, map.getHeight() / 2, DIRECTION::RIGHT);
+    
+    map.clear();
+    
+    T_mine = 0;
+    T_cooldown = 0;
+    T_duration = 0;
+    
+    target.spawn(map, status);
+    trap.spawn(map, status);
+}
+
 void Engine::run()
 {
+    reset();
+    
         while (!(status & FLAG_LOSE))
         {
             input();
@@ -145,6 +163,7 @@ void Engine::run()
         std::cout << '\n' << "                             <<< GAME OVER !!! \n";
         std::cout << '\n' << "                             <<< YOUR SCORE: " << player.score <<"\n\n\n";
         
+        getchar();
     }
 }
 
