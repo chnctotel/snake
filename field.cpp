@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "field.h"
+#include "utils.h"
 
 Field::Field(int width, int height)
 {
@@ -53,35 +54,59 @@ void Field::print(byte status, int score, int T_cooldown, int T_duration, int T_
         for (size_t x = 0; x < width; x++)
         {
             char s = data[y][x];
+            int color = utils::GetRandomInt(31, 36);
             
-            if (s == '0')
-                std::cout << DARK_GREEN;
-            else if (s == 'o')
-                std::cout << LIGHT_GREEN;
-            else if (s == '@' || s == '$')
-                std::cout << YELLOW;
-            else if (s == 'X' || s == 'x')
-                std::cout << RED;
+            if (status & FLAG_RUSH && s != ' ')
+                    std::cout << "\033[1;3" << utils::GetRandomInt(1, 6) << "m" << s << " " << RESET;
+               else if (s == 'p')
+                    std::cout << "💊";
+                else if (s == ' ')
+                    std::cout << "  ";
+                else
+                {
+                    if (s == '0')
+                        std::cout << DARK_GREEN;
+                    else if (s == 'o')
+                        std::cout << LIGHT_GREEN;
+                    else if (s == '@' || s == '$')
+                        std::cout << YELLOW;
+                    else if (s == 'X' || s == 'x')
+                        std::cout << RED;
+                    else if (s == '?')
+                        std::cout << "\033[" << color << "m";
+                    else if (s == 's')
+                        std::cout << "\033[" << color << "m";
+                    else if (s == ';')
+                        std::cout << "\033[" << color << "m";
+                    else if (s == '!')
+                        std::cout << "\033[" << color << "m";
+                    else if (s == 'v')
+                        std::cout << "\033[" << color << "m";
+                    else if (s == '6')
+                        std::cout << "\033[" << color << "m";
+                    else if (s == '%')
+                        std::cout << "\033[" << color << "m";
+                    
+                    std::cout << s << ' ';
+                    std::cout << RESET;
+                }
             
-            std::cout << s << ' ';
-            std::cout << RESET;
-            
-            if (x == width - 1)
-            {
-                if (y == 2)
-                    std::cout << " <--- SCORE: " << score;
-                if (y == 4)
-                    std::cout << " <--- MODE: " << ((status & FLAG_SPLIT) ? "SPLIT" : "NORMAL");
-                if (y == 6 && !(status & FLAG_SPLIT) && T_cooldown < 250)
-                    std::cout << " <--- mine timer: " << (50 - T_mine);
-                if (y == 6 && (status & FLAG_SPLIT))
-                    std::cout << " <--- duration: " << (50 - T_duration);
-                if (y == 6 && T_cooldown > 250)
-                    std::cout << " STORM IS COMING..";
+                if (x == width - 1)
+                {
+                    if (y == 2)
+                        std::cout << " <--- SCORE: " << score;
+                    if (y == 4)
+                        std::cout << " <--- MODE: " << ((status & FLAG_SPLIT) ? "SPLIT" : "NORMAL");
+                    if (y == 6 && !(status & FLAG_SPLIT) && T_cooldown < 250)
+                        std::cout << " <--- mine timer: " << (50 - T_mine);
+                    if (y == 6 && (status & FLAG_SPLIT))
+                        std::cout << " <--- duration: " << (50 - T_duration);
+                    if (y == 6 && T_cooldown > 250)
+                        std::cout << " STORM IS COMING..";
+                }
             }
+            std::cout << '\n';
         }
-        std::cout << '\n';
-    }
 }
 
 bool Field::emptyPos(int x, int y)

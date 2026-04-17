@@ -17,6 +17,8 @@ using byte = unsigned char;
 
 static constexpr byte FLAG_LOSE  = 1 << 0;
 static constexpr byte FLAG_SPLIT = 1 << 1;
+static constexpr byte FLAG_TRIP  = 1 << 2;
+static constexpr byte FLAG_RUSH  = 1 << 3;
 
 enum class OPTION
 {
