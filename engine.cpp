@@ -12,7 +12,7 @@ player(map.getWidth() / 2, map.getHeight() / 2, DIRECTION::RIGHT)
 {
     map.clear();
     
-    Tdrugs_targetLT = utils::GetRandomInt(400, 600);
+    T_targetLT = utils::GetRandomInt(400, 600);
     target.spawn(map, status);
     trap.spawn(map, status);
 }
@@ -35,7 +35,7 @@ void Engine::render()
             map.setChar(gx, gy, symbols[utils::GetRandomInt(0, 7)]);
         }
     
-    map.print(status, player.score, T_cooldown, T_duration, T_mine);
+    map.print(status, player.score, T_cooldown, T_targetLT, T_mine);
 }
 
 void Engine::input()
@@ -43,79 +43,43 @@ void Engine::input()
     if (utils::kbhit())
     {
         char key = getchar();
-        
-        if (status & FLAG_TRIP)
-        {
-            if (key == 'w' || key == 'W') key = 's';
-            if (key == 's' || key == 'S') key = 'w';
-            if (key == 'a' || key == 'A') key = 'd';
-            if (key == 'd' || key == 'D') key = 'a';
-        }
-        
         player.input(key);
     }
 }
 
 void Engine::timer()
 {
-    
-    // split mode
-    if (T_cooldown >= 300 && !(status & FLAG_SPLIT))
+    if (T_lifetime == 0)
     {
-        status |= FLAG_SPLIT;
-        T_cooldown = 0;
-        T_duration = 0;
-        
-        target.spawn(map, status);
-        trap.spawn(map, status);
-    }
-    
-    
-    if (status & FLAG_SPLIT)
-    {
-        T_duration++;
-        if (T_duration >= 50)
-        {
-            status &= ~FLAG_SPLIT;
-            T_duration = 0;
-                
-            target.spawn(map, status);
-            trap.spawn(map, status);
-                
-        }
-    } else
-            T_cooldown++;
-    
-    //drugs
-    if (Tdrugs_lifetime == 0)
-    {
-        Tdrugs_cooldown++;
-        if (Tdrugs_cooldown == Tdrugs_targetLT)
+        T_cooldown++;
+        if (T_cooldown == T_targetLT)
         {
             drugs.spawn(map, 0);
-            Tdrugs_lifetime = 1;
-            Tdrugs_cooldown = 0;
-            Tdrugs_targetLT = utils::GetRandomInt(400, 600);
+            T_lifetime = 1;
+            T_cooldown = 0;
+            T_targetLT = utils::GetRandomInt(200, 500);
         }
     }
-    else if (Tdrugs_lifetime > 0)
+    else if (T_lifetime > 0)
     {
-        Tdrugs_lifetime++;
-        if (Tdrugs_lifetime >= 50)
+        T_lifetime++;
+        if (T_lifetime >= 50)
         {
             drugs.normal = {-1, -1};
-            Tdrugs_lifetime = 0;
+            T_lifetime = 0;
         }
     }
     
-    if (status & (FLAG_TRIP | FLAG_RUSH))
+    if (status & (FLAG_TRIP | FLAG_RUSH | FLAG_SPLIT))
     {
-        Tdrugs_duration++;
+        T_duration++;
         
-        if (Tdrugs_duration >= Tdrugs_targetD)
+        if (T_duration >= T_targetD)
         {
-            status &= ~(FLAG_TRIP | FLAG_RUSH);
-            Tdrugs_duration = 0;
+            status &= ~(FLAG_TRIP | FLAG_RUSH | FLAG_SPLIT);
+            T_duration = 0;
+            trap.spawn(map, status);
+            target.spawn(map, status);
         }
     }
     
@@ -170,17 +134,28 @@ void Engine::collision()
     
     if (player.snakeHead.x == drugs.normal.x && player.snakeHead.y == drugs.normal.y)
     {
+        player.score += 5;
+        for (size_t i = 0; i < 5; i++)
+            player.grow();
+        
         drugs.normal = { -1, -1 };
-        status &= ~(FLAG_TRIP | FLAG_RUSH);
-        int drugs_effect = utils::GetRandomInt(0, 1);
+        status &= ~(FLAG_TRIP | FLAG_RUSH | FLAG_SPLIT);
+        int drugs_effect = utils::GetRandomInt(0, 2);
         
         if (drugs_effect == 0)
             status |= FLAG_TRIP;
-        else
+        else if (drugs_effect == 1)
             status |= FLAG_RUSH;
-        Tdrugs_duration = 1;
-        Tdrugs_targetD = utils::GetRandomInt(50, 150);
-        Tdrugs_lifetime = 0;
+        else
+        {
+            status |= FLAG_SPLIT;
+            trap.spawn(map, status);
+            target.spawn(map, status);
+        }
+        
+        T_duration = 1;
+        T_targetD = utils::GetRandomInt(50, 150);
+        T_lifetime = 0;
     }
     
 }
@@ -208,19 +183,16 @@ void Engine::update()
 void Engine::reset()
 {
     status &= ~FLAG_LOSE;
-    status &= ~FLAG_SPLIT;
-    status &= ~(FLAG_TRIP | FLAG_RUSH);
+    status &= ~(FLAG_TRIP | FLAG_RUSH | FLAG_SPLIT);
     
     player.reset(map.getWidth() / 2, map.getHeight() / 2, DIRECTION::RIGHT);
     
     map.clear();
     
     T_mine = 0;
+    T_lifetime = 0;
     T_cooldown = 0;
     T_duration = 0;
-    Tdrugs_lifetime = 0;
-    Tdrugs_cooldown = 0;
-    Tdrugs_duration = 0;
     
     drugs.normal = {-1, -1};
     

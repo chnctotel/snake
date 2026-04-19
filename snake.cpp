@@ -55,11 +55,11 @@ void Snake::input(char key)
 {
     if ((key == 'w' || key == 'W') && move != DIRECTION::DOWN)
         move = DIRECTION::UP;
-    if ((key == 's' || key == 'S') && move != DIRECTION::UP)
+    else if ((key == 's' || key == 'S') && move != DIRECTION::UP)
         move = DIRECTION::DOWN;
-    if ((key == 'a' || key == 'A') && move != DIRECTION::RIGHT)
+    else if ((key == 'a' || key == 'A') && move != DIRECTION::RIGHT)
         move = DIRECTION::LEFT;
-    if ((key == 'd' || key == 'D') && move != DIRECTION::LEFT)
+    else if ((key == 'd' || key == 'D') && move != DIRECTION::LEFT)
         move = DIRECTION::RIGHT;
 }
 

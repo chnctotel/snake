@@ -11,9 +11,13 @@ I started learning C++ on January 9, 2026. This project represents my first majo
 
 ## Key Features
 - Classic Snake gameplay with collision detection.
-- **SPLIT Mode**: a custom mechanic where game entities (food, mines) can duplicate.
 - Timer system for managing power-ups and hazards.
 - Non-blocking input handling (game logic runs independently of user input).
+
+- **Drug System**: A dynamic power-up mechanic with randomized effects.
+- TRIP: Distorts the visual field with random symbols and alters game speed.
+- RUSH: Significantly increases the movement speed of the snake.
+- SPLIT: Fragments targets and traps into multiple smaller entities.
 
 ## Build and Run
 To compile the project on Unix-based systems (macOS/Linux), run the following command in the source directory:

@@ -19,15 +19,13 @@ private:
     
     byte status = 0;
     
-    int T_cooldown = 0;
-    int T_duration = 0;
     int T_mine = 0;
+    int T_cooldown = 0;
+    int T_lifetime = 0;
+    int T_duration = 0;
     
-    int Tdrugs_cooldown = 0;
-    int Tdrugs_lifetime = 0;
-    int Tdrugs_duration = 0;
-    int Tdrugs_targetLT = 0;
-    int Tdrugs_targetD  = 0;
+    int T_targetLT = 0;
+    int T_targetD  = 0;
     
     Field map;
     Snake player;

@@ -45,7 +45,7 @@ void Field::setChar(int x, int y, char symbol)
         data[y][x] = symbol;
 }
 
-void Field::print(byte status, int score, int T_cooldown, int T_duration, int T_mine)
+void Field::print(byte status, int score, int T_cooldown, int T_targetLT, int T_mine)
 {
     std::system("clear");
     
@@ -95,14 +95,8 @@ void Field::print(byte status, int score, int T_cooldown, int T_duration, int T_
                 {
                     if (y == 2)
                         std::cout << " <--- SCORE: " << score;
-                    if (y == 4)
-                        std::cout << " <--- MODE: " << ((status & FLAG_SPLIT) ? "SPLIT" : "NORMAL");
-                    if (y == 6 && !(status & FLAG_SPLIT) && T_cooldown < 250)
+                    if (y == 4 && !(status & FLAG_SPLIT && T_cooldown < T_targetLT))
                         std::cout << " <--- mine timer: " << (50 - T_mine);
-                    if (y == 6 && (status & FLAG_SPLIT))
-                        std::cout << " <--- duration: " << (50 - T_duration);
-                    if (y == 6 && T_cooldown > 250)
-                        std::cout << " STORM IS COMING..";
                 }
             }
             std::cout << '\n';
