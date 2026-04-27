@@ -23,7 +23,7 @@ public:
     
     void clear();
     void setChar(int x, int y, char symbol);
-    void print(byte status, int score, int T_cooldown, int T_targetLT, int T_mine);
+    void print(byte status, int score, int T_cooldown, int T_targetCD, int T_mine);
     
     bool emptyPos(int x, int y);
 };

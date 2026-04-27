@@ -40,6 +40,27 @@ Snake::Snake(int x, int y, DIRECTION startMove)
     setDirection();
 }
 
+Snake::Snake(const Snake& other)
+{
+    this->score = other.score;
+    this->snakeHead = other.snakeHead;
+    this->direction = other.direction;
+    this->move = other.move;
+    
+    body = new vector[score + 1];
+    for (size_t i = 0; i < score + 1; i++)
+        body[i] = other.body[i];
+}
+
+Snake::Snake(Snake&& other)
+: body(other.body), score(other.score), snakeHead(other.snakeHead),
+direction(other.direction), move(other.move)
+{
+    other.body = nullptr;
+    other.score = 0;
+}
+
+
 void Snake::updatePosition()
 {
     setDirection();
@@ -47,7 +68,7 @@ void Snake::updatePosition()
     for (int i = score; i > 0; i--)
         body[i] = body[i - 1];
     
-    snakeHead = add(snakeHead, direction);
+    snakeHead += direction;
     body[0] = snakeHead;
 }
 
@@ -96,7 +117,7 @@ void Snake::draw(Field& f)
 bool Snake::collision()
 {
     for (int i = 1; i <= score; i++)
-        if (snakeHead.x == body[i].x && snakeHead.y == body[i].y)
+        if (snakeHead == body[i])
             return true;
     return false;
 }

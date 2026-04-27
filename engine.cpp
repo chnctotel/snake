@@ -12,7 +12,7 @@ player(map.getWidth() / 2, map.getHeight() / 2, DIRECTION::RIGHT)
 {
     map.clear();
     
-    T_targetLT = utils::GetRandomInt(400, 600);
+    T_targetCD = utils::GetRandomInt(200, 500);
     target.spawn(map, status);
     trap.spawn(map, status);
 }
@@ -31,11 +31,11 @@ void Engine::render()
         {
             int gx = utils::GetRandomInt(1, map.getWidth() - 2);
             int gy = utils::GetRandomInt(1, map.getHeight() - 2);
-            char symbols[] = {'?', 's', ';', '!', 'v', '6', '%', '0'};
+            char symbols[] = {'?', 's', ';', '!', 'v', '6', '%', '?'};
             map.setChar(gx, gy, symbols[utils::GetRandomInt(0, 7)]);
         }
     
-    map.print(status, player.score, T_cooldown, T_targetLT, T_mine);
+    map.print(status, player.score, T_cooldown, T_targetCD, T_mine);
 }
 
 void Engine::input()
@@ -52,12 +52,12 @@ void Engine::timer()
     if (T_lifetime == 0)
     {
         T_cooldown++;
-        if (T_cooldown == T_targetLT)
+        if (T_cooldown == T_targetCD)
         {
             drugs.spawn(map, 0);
             T_lifetime = 1;
             T_cooldown = 0;
-            T_targetLT = utils::GetRandomInt(200, 500);
+            T_targetCD = utils::GetRandomInt(200, 500);
         }
     }
     else if (T_lifetime > 0)
@@ -95,7 +95,7 @@ void Engine::collision()
         for (int i = 0; i < target.count; i++)
         {
             vector pos = target.small[i];
-            if (player.snakeHead.x == pos.x && player.snakeHead.y == pos.y)
+            if (player.snakeHead == pos)
             {
                 player.grow();
                 target.setSmallPos(i, {-1, -1});
@@ -105,7 +105,7 @@ void Engine::collision()
         for (int i = 0; i < trap.count; i++)
         {
             vector pos = trap.small[i];
-            if (player.snakeHead.x == pos.x && player.snakeHead.y == pos.y)
+            if (player.snakeHead == pos)
             {
                 player.shrink();
                 trap.setSmallPos(i, {-1, -1});
@@ -113,13 +113,13 @@ void Engine::collision()
         }
     } else
     {
-        if (player.snakeHead.x == target.normal.x && player.snakeHead.y == target.normal.y)
+        if (player.snakeHead == target.normal)
         {
             player.grow();
             target.spawn(map, status);
         }
         
-        bool is_mineActive = (player.snakeHead.x == trap.normal.x && player.snakeHead.y == trap.normal.y);
+        bool is_mineActive = (player.snakeHead == trap.normal);
         
         if (T_mine >= 50 || is_mineActive)
         {
@@ -132,9 +132,8 @@ void Engine::collision()
     }
     
     
-    if (player.snakeHead.x == drugs.normal.x && player.snakeHead.y == drugs.normal.y)
+    if (player.snakeHead == drugs.normal)
     {
-        player.score += 5;
         for (size_t i = 0; i < 5; i++)
             player.grow();
         

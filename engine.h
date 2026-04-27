@@ -24,7 +24,7 @@ private:
     int T_lifetime = 0;
     int T_duration = 0;
     
-    int T_targetLT = 0;
+    int T_targetCD = 0;
     int T_targetD  = 0;
     
     Field map;

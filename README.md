@@ -7,7 +7,7 @@ I started learning C++ on January 9, 2026. This project represents my first majo
 
 - Transition from procedural (struct-based) programming to an OOP architecture.
 - Manual memory management and dynamic array handling.
-- Modular code structure (Engine, Entities, Field, and Snake classes).
+- Modular code structure (Application, Menu, Engine, Entities, Field, and Snake classes).
 
 ## Key Features
 - Classic Snake gameplay with collision detection.
@@ -28,7 +28,7 @@ To start the game:
 ./snake
 
 ## Controls
-- W / ↑ — move up  
-- S / ↓ — move down  
-- A / ← — move left  
-- D / → — move right 
+- W - ↑ move up  
+- S - ↓ move down  
+- A - ← move left  
+- D - → move right 

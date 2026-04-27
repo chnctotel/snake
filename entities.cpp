@@ -66,14 +66,14 @@ int Entities::collision(Field& f, byte status, vector head)
 {
     if (status & FLAG_SPLIT) {
         for (size_t i = 0; i < count; i++)
-            if (small[i].x != -1 && head.x == small[i].x && head.y == small[i].y)
+            if (small[i].x != -1 && head == small[i])
             {
                 small[i] = {-1, -1};
                 return 1;
             }
     }
     else
-        if (head.x == normal.x && head.y == normal.y)
+        if (head == normal)
         {
             normal = {-1, -1};
             spawn(f, status);

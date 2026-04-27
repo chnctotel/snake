@@ -45,7 +45,7 @@ void Field::setChar(int x, int y, char symbol)
         data[y][x] = symbol;
 }
 
-void Field::print(byte status, int score, int T_cooldown, int T_targetLT, int T_mine)
+void Field::print(byte status, int score, int T_cooldown, int T_targetCD, int T_mine)
 {
     std::system("clear");
     
@@ -95,7 +95,7 @@ void Field::print(byte status, int score, int T_cooldown, int T_targetLT, int T_
                 {
                     if (y == 2)
                         std::cout << " <--- SCORE: " << score;
-                    if (y == 4 && !(status & FLAG_SPLIT && T_cooldown < T_targetLT))
+                    if (y == 4 && !(status & FLAG_SPLIT && T_cooldown < T_targetCD))
                         std::cout << " <--- mine timer: " << (50 - T_mine);
                 }
             }

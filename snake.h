@@ -22,9 +22,9 @@ private:
 public:
     
     Snake(int x, int y, DIRECTION startMove);
+    Snake(const Snake& other);
+    Snake(Snake&& other);
     ~Snake() { delete[] body; }
-    
-    vector add(const vector& v1, const vector& v2) { return {v1.x + v2.x, v1.y + v2.y};}
     
     void updatePosition();
     void input(char key);

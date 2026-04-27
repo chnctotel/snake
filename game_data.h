@@ -34,5 +34,16 @@ struct vector
 {
     int x;
     int y;
+    
+    vector& operator+=(const vector& other)
+    {
+        this->x += other.x;
+        this->y += other.y;
+        return *this;
+    }
+    
+    vector operator+(const vector& other) const { return {this->x + other.x, this->y + other.y}; }
+    
+    bool operator==(const vector& other) const { return (this->x == other.x && this->y == other.y); }
 };
 
