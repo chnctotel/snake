@@ -14,17 +14,10 @@ Field::Field(int width, int height)
     this->width = width;
     this->height = height;
     
-    data = new char*[height];
-    for (size_t i = 0; i < height; i++)
-        data[i] = new char[width];
+    data = std::unique_ptr<std::unique_ptr<char[]>[]>(new std::unique_ptr<char[]>[height]);
     
-}
-
-Field::~Field()
-{
     for (size_t i = 0; i < height; i++)
-        delete[] data[i];
-    delete[] data;
+        data[i] = std::unique_ptr<char[]>(new char[width]);
 }
 
 void Field::clear()

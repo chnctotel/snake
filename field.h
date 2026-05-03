@@ -1,6 +1,7 @@
 #pragma once
 //  field.h
 //  snake
+#include <memory>
 #include "game_data.h"
 
 
@@ -8,7 +9,7 @@ class Field
 {
 private:
     
-    char** data;
+    std::unique_ptr<std::unique_ptr<char[]>[]> data;
     
     int width;
     int height;
@@ -16,7 +17,6 @@ private:
 public:
     
     Field(int width, int height);
-    ~Field();
     
     int getWidth() const { return width; }
     int getHeight() const { return height; }

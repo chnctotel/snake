@@ -31,7 +31,7 @@ Snake::Snake(int x, int y, DIRECTION startMove)
 {
     score = 0;
     
-    body = new vector[1];
+    body = std::unique_ptr<vector[]>(new vector[1]);
     snakeHead = {x, y};
     
     body[0] = snakeHead;
@@ -39,27 +39,6 @@ Snake::Snake(int x, int y, DIRECTION startMove)
     
     setDirection();
 }
-
-Snake::Snake(const Snake& other)
-{
-    this->score = other.score;
-    this->snakeHead = other.snakeHead;
-    this->direction = other.direction;
-    this->move = other.move;
-    
-    body = new vector[score + 1];
-    for (size_t i = 0; i < score + 1; i++)
-        body[i] = other.body[i];
-}
-
-Snake::Snake(Snake&& other)
-: body(other.body), score(other.score), snakeHead(other.snakeHead),
-direction(other.direction), move(other.move)
-{
-    other.body = nullptr;
-    other.score = 0;
-}
-
 
 void Snake::updatePosition()
 {
@@ -86,10 +65,9 @@ void Snake::input(char key)
 
 void Snake::grow()
 {
-    vector* temp = utils::AddElement(body, body + score + 1, {0, 0});
+    vector* temp = utils::AddElement(body.get(), body.get() + score + 1, {0, 0});
     
-    delete[] body;
-    body = temp;
+    body.reset(temp);
     score++;
 }
 
@@ -99,10 +77,9 @@ void Snake::shrink()
         return;
         
 
-    vector* temp = utils::RemoveElement(body, body + score + 1, body + score);
+    vector* temp = utils::RemoveElement(body.get(), body.get() + score + 1, body.get() + score);
     
-    delete[] body;
-    body = temp;
+    body.reset(temp);
     score--;
 }
 
@@ -124,16 +101,10 @@ bool Snake::collision()
 
 void Snake::reset(int x, int y, DIRECTION startMove)
 {
-    if (body != nullptr)
-    {
-        delete[] body;
-        body = nullptr;
-    }
-    
     score = 0;
     snakeHead = { x, y };
   
-    body = new vector[1];
+    body = std::unique_ptr<vector[]>(new vector[1]);
     body[0] = snakeHead;
     move = startMove;
     

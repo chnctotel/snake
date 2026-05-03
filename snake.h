@@ -2,6 +2,7 @@
 //  snake.h
 //  snake
 
+#include <memory>
 #include "game_data.h"
 #include "field.h"
 
@@ -13,7 +14,7 @@ private:
     int score;
     
     vector snakeHead;
-    vector* body;
+    std::unique_ptr<vector[]> body;
     vector direction;
     DIRECTION move;
     
@@ -22,10 +23,7 @@ private:
 public:
     
     Snake(int x, int y, DIRECTION startMove);
-    Snake(const Snake& other);
-    Snake(Snake&& other);
-    ~Snake() { delete[] body; }
-    
+   
     void updatePosition();
     void input(char key);
     
