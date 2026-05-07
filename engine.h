@@ -41,6 +41,7 @@ public:
     
     
     byte getStatus() const { return status; }
+    int getScore() const { return player.score; }
     
     void render();
     

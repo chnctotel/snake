@@ -4,3 +4,4 @@ DerivedData/
 build/
 *.xcuser*
 *.xcworkspace
+snake.db
