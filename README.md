@@ -22,7 +22,7 @@ I started learning C++ on January 9, 2026. This project represents my first majo
 ## Build and Run
 To compile the project on Unix-based systems (macOS/Linux), run the following command in the source directory:
 
-g++ main.cpp application.cpp engine.cpp entities.cpp field.cpp menu.cpp snake.cpp -o snake
+g++ main.cpp application.cpp engine.cpp entities.cpp field.cpp menu.cpp snake.cpp database.cpp -o snake -lsqlite3
 
 To start the game:
 ./snake

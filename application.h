@@ -11,8 +11,9 @@ class Application
 private:
     
     bool isRunning;
+    bool isLogged;
     
-    std::string playerNickname = "Player1";
+    std::string playerNickname;
     Database db;
     
     Menu menu;
@@ -20,7 +21,7 @@ private:
     
 public:
     
-    Application() { isRunning = true; }
+    Application() { isRunning = true; isLogged = false; }
     
     void run();
     

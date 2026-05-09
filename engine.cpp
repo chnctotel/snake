@@ -223,9 +223,10 @@ void Engine::run()
     {
         system("clear");
         std::cout << '\n' << "                             <<< GAME OVER !!! \n";
-        std::cout << '\n' << "                             <<< YOUR SCORE: " << player.score <<"\n\n\n";
+        std::cout << '\n' << "                             <<< YOUR SCORE: " << player.score <<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
         
-        getchar();
+        std::cout << "\nPress Enter...";
+        getchar(); getchar();
     }
 }
 
